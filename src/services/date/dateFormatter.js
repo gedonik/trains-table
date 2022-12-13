@@ -14,9 +14,6 @@ export const dateFormat = (originDate) => {
 
         newDate = `${dateResult} ${timeResult}`;
     }
-    if (newDate) {
-        return newDate
-    } else {
-        return '-'
-    }
+
+    return newDate;
 }
