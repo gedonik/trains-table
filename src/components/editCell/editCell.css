@@ -1,0 +1,61 @@
+.edit-cell {
+    width: 400px;
+    position: relative;
+}
+
+.edit-cell__title {
+    margin-bottom: 1.25rem;
+    text-align: center;
+}
+
+.edit-cell__close {
+    position: absolute;
+    top: -0.938rem;
+    right: -0.938rem;
+    border: transparent;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.edit-cell__close i {
+    font-size: 1.875rem;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.edit-cell__close i:hover {
+    opacity: 0.4;
+}
+
+.modal-cells {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.938rem;
+}
+
+.edit-cell__control {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn.edit-cell__save {
+    padding: 0.313rem 1.25rem;
+    margin-right: 0.938rem;
+    background-color: #35ce35;
+}
+
+.btn.edit-cell__save:hover {
+    background-color: #19a119;
+}
+
+.btn.edit-cell__cancel {
+    background-color: #de5454;
+}
+
+.btn.edit-cell__cancel:hover {
+    background-color: #cc2424;
+}
+
+input {
+    text-align: right;
+}

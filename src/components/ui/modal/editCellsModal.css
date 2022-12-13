@@ -1,0 +1,19 @@
+.modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal__content {
+    padding: 1.563rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    min-width: 15.625rem;
+}
+
+.modal-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
