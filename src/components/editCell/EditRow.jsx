@@ -1,52 +1,57 @@
-import React, {useState} from 'react';
-import './editCell.css';
-import {headings} from "../tableHeader/TableHeader.jsx";
+import React, {useMemo, useState} from 'react';
+import './editRow.css';
 import MainButton from "../ui/button/MainButton.jsx";
-import {dateFormat} from "../../services/date/dateFormatter.js";
+import {dateFormatting} from "../../services/date/dateFormatter.js";
 
-const EditCell = ({setVisible, chosenCell}) => {
-    const [trainNumber, setTrainNumber] = useState(chosenCell.trainNumber);
-    const [date, setDate] = useState(dateFormat(chosenCell.lastOperDt));
-    const [invoiceNumber, setInvoiceNumber] = useState(chosenCell.invoiceNumber);
-    const [invoiceId, setInvoiceId] = useState(chosenCell.invoiceId);
+const EditRow = ({headings, setVisible, currentRow, changeRow}) => {
+    const [trainNumber, setTrainNumber] = useState(currentRow.trainNumber);
+    const [date, setDate] = useState(dateFormatting(currentRow.lastOperDt));
+    const [invoiceNumber, setInvoiceNumber] = useState(currentRow.invoiceNumber);
+    const [invoiceId, setInvoiceId] = useState(currentRow.invoiceId);
 
-    const editData = () => {
-
+    const editRow = (e, trainsNumber, date, invoiceNumber, invoiceId) => {
+        e.preventDefault();
+        changeRow(currentRow.ordNumber, trainNumber, date, invoiceNumber, invoiceId)
+        setVisible(false);
     }
 
     const cancelEdit = () => {
-        setTrainNumber(chosenCell.trainNumber);
-        setDate(dateFormat(chosenCell.lastOperDt));
-        setInvoiceNumber(chosenCell.invoiceNumber);
-        setInvoiceId(chosenCell.invoiceId);
+        setTrainNumber(currentRow.trainNumber);
+        setDate(dateFormatting(currentRow.lastOperDt));
+        setInvoiceNumber(currentRow.invoiceNumber);
+        setInvoiceId(currentRow.invoiceId);
+        setVisible(false);
     }
-    // action="https://6356556e9243cf412f81f19c.mockapi.io/trains" method="post"
+
     return (
-        <form className="edit-cell">
+        <form
+            className="edit-cell"
+            onSubmit={(e) => editRow(e, trainNumber, date, invoiceNumber, invoiceId)}
+        >
             <h2 className="edit-cell__title">Изменение значений</h2>
-            <button className="edit-cell__close" type="button" onClick={() => setVisible(false)}>
+            <button className="edit-cell__close" type="button" onClick={() => cancelEdit()}>
                 <i className="bi bi-x"></i>
             </button>
 
             <label className="modal-cells" htmlFor={headings[0].title}>
                 <strong>{headings[0].title}</strong>
-                {chosenCell.ordNumber}
+                {currentRow.ordNumber}
             </label>
 
             <label className="modal-cells" htmlFor={headings[1].title}>
                 <strong>{headings[1].title}</strong>
-                {chosenCell.carNumber}
+                {currentRow.carNumber}
             </label>
 
             <label className="modal-cells" htmlFor={headings[2].title}>
                 <strong>{headings[2].title}</strong>
-                {chosenCell.trainIndex ? chosenCell.trainIndex : '-'}
+                {currentRow.trainIndex ? currentRow.trainIndex : '-'}
             </label>
 
             <label className="modal-cells" htmlFor={headings[3].title}>
                 <strong>{headings[3].title}</strong>
                 <input
-                    value={chosenCell.trainNumber ? chosenCell.trainNumber : '-'}
+                    value={trainNumber ? trainNumber : '-'}
                     onChange={(e) => setTrainNumber(e.target.value)}
                     type="text"
                     name={headings[3].title}
@@ -56,15 +61,15 @@ const EditCell = ({setVisible, chosenCell}) => {
 
             <label className="modal-cells" htmlFor={headings[4].title}>
                 <strong>{headings[4].title}</strong>
-                {chosenCell.carStatus ? chosenCell.carStatus : '-'}
+                {currentRow.carStatus ? currentRow.carStatus : '-'}
             </label>
 
             <label className="modal-cells" htmlFor={headings[5].title}>
                 <strong>{headings[5].title}</strong>
                 <input
-                    value={dateFormat(chosenCell.lastOperDt) ? dateFormat(chosenCell.lastOperDt) : '-'}
+                    value={date ? date : '-'}
                     onChange={(e) => setDate(e.target.value)}
-                    type="text"
+                    type="date"
                     name={headings[5].title}
                     id={headings[5].title}
                 />
@@ -73,7 +78,7 @@ const EditCell = ({setVisible, chosenCell}) => {
             <label className="modal-cells" htmlFor={headings[6].title}>
                 <strong>{headings[6].title}</strong>
                 <input
-                    value={chosenCell.invoiceNumber}
+                    value={invoiceNumber ? invoiceNumber : '-'}
                     onChange={(e) => setInvoiceNumber(e.target.value)}
                     type="text"
                     name={headings[6].title}
@@ -84,7 +89,7 @@ const EditCell = ({setVisible, chosenCell}) => {
             <label className="modal-cells" htmlFor={headings[7].title}>
                 <strong>{headings[7].title}</strong>
                 <input
-                    value={chosenCell.invoiceId}
+                    value={invoiceId ? invoiceId : '-'}
                     onChange={(e) => setInvoiceId(e.target.value)}
                     type="text"
                     name={headings[7].title}
@@ -94,7 +99,7 @@ const EditCell = ({setVisible, chosenCell}) => {
 
             <label className="modal-cells" htmlFor={headings[8].title}>
                 <strong>{headings[8].title}</strong>
-                {chosenCell.stateId}
+                {currentRow.stateId}
             </label>
 
             <div className="edit-cell__control">
@@ -105,7 +110,7 @@ const EditCell = ({setVisible, chosenCell}) => {
                     Ок
                 </MainButton>
                 <MainButton
-                    onClick={cancelEdit}
+                    onClick={() => cancelEdit()}
                     className="btn edit-cell__cancel"
                     type="button"
                 >
@@ -116,4 +121,4 @@ const EditCell = ({setVisible, chosenCell}) => {
     );
 };
 
-export default EditCell;
+export default EditRow;

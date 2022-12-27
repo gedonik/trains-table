@@ -1,8 +1,13 @@
-tr {
+.row-list {
     border-bottom: 2px solid rgba(0,0,0, 0.1);
+    transition: opacity 0.3s ease-in-out;
 }
 
-td {
+.row-list:hover {
+    opacity: 0.4;
+}
+
+.row-item {
     padding: 0.938rem 0.625rem;
     font-size: 0.875rem;
     text-align: center;
