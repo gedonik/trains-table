@@ -103,3 +103,7 @@ body {
     padding: 0 0.938rem;
     margin: 0 auto;
 }
+
+.app-wrapper {
+    margin-top: 3.125rem;
+}

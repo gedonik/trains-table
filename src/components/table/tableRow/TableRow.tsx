@@ -1,8 +1,14 @@
 import React from 'react';
 import './tableRow.css';
-import {dateFormatting} from "../../services/date/dateFormatter.js";
+import {dateFormatting} from "../../../services/date/dateFormatter.js";
+import {Car} from "../../../globalTypes";
 
-const TableRow = ({ data, setRow }) => {
+type PropsTableRow = {
+    data: Car,
+    setRow: Function
+}
+
+const TableRow = ({ data, setRow }: PropsTableRow) => {
     return (
         <tr onClick={() => setRow(data.ordNumber)} className="row-list">
             <td className="row-item">{data.ordNumber}</td>

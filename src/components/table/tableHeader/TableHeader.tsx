@@ -1,7 +1,13 @@
 import React from 'react';
 import './tableHeader.css';
+import {headings} from "./headings.js";
 
-const TableHeader = ({ headings, sortColumns, getClassNamesFor }) => {
+type PropsTableHeaderType = {
+    sortColumns: Function,
+    getClassNamesFor: Function
+}
+
+const TableHeader = ({sortColumns, getClassNamesFor}: PropsTableHeaderType) => {
     return (
         <thead>
         <tr>

@@ -1,9 +1,10 @@
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import './editRow.css';
-import MainButton from "../ui/button/MainButton.jsx";
-import {dateFormatting} from "../../services/date/dateFormatter.js";
+import MainButton from "../../ui/button/MainButton.tsx";
+import {dateFormatting} from "../../../services/date/dateFormatter.ts";
+import {headings} from "../tableHeader/headings.ts";
 
-const EditRow = ({headings, setVisible, currentRow, changeRow}) => {
+const EditRow = ({setVisible, currentRow, changeRow}) => {
     const [trainNumber, setTrainNumber] = useState(currentRow.trainNumber);
     const [date, setDate] = useState(dateFormatting(currentRow.lastOperDt));
     const [invoiceNumber, setInvoiceNumber] = useState(currentRow.invoiceNumber);
@@ -69,7 +70,7 @@ const EditRow = ({headings, setVisible, currentRow, changeRow}) => {
                 <input
                     value={date ? date : '-'}
                     onChange={(e) => setDate(e.target.value)}
-                    type="date"
+                    type="text"
                     name={headings[5].title}
                     id={headings[5].title}
                 />
