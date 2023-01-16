@@ -3,25 +3,23 @@ import TableHeader from "./tableHeader/TableHeader.js";
 import TableRow from "./tableRow/TableRow.js";
 import './table.css';
 import {Car} from "../../globalTypes";
-import {useSorting} from "../ui/filterAndSearch/sort/useSorting";
-import {searchAndSort} from "../ui/filterAndSearch/searchAndSort";
 
 type PropsTableType = {
-    data: [] | Array<Car>
-    setRow: Function,
+    data: [] | Array<Car>,
+    sortColumns: Function,
+    getClassNamesFor: Function,
+    setRow: Function
 }
 
-const Table = ({data, setRow}: PropsTableType) => {
-    const [sortedCells, sortColumns, getClassNamesFor] = useSorting(data);
-
+const Table = ({data, sortColumns, getClassNamesFor, setRow}: PropsTableType) => {
     return (
-        sortedCells
+        data
             ?
             <table className="table">
                 <TableHeader sortColumns={sortColumns} getClassNamesFor={getClassNamesFor} />
                 <tbody>
-                {sortedCells.map(row =>
-                    <TableRow setRow={setRow} data={row} key={row.ordNumber}/>
+                {data.map((row, index) =>
+                    <TableRow setRow={setRow} data={row} key={index}/>
                 )}
                 </tbody>
             </table>

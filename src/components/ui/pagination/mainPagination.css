@@ -1,0 +1,38 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 1.2rem;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    width: 35px;
+    height: 1px;
+    background-color: black;
+}
+
+.pagination__descr,
+.pagination__select,
+.pagination__page,
+.pagination__arrow-left{
+    margin-right: 2rem;
+}
+
+.btn.pagination__arrow-left,
+.btn.pagination__arrow-right {
+    color: #000;
+}
+
+.pagination__arrow-left:disabled,
+.pagination__arrow-right:disabled {
+    opacity: 0.4;
+}

@@ -9,7 +9,3 @@ export interface Car {
     stateId: number,
     lastOperDt: string
 }
-
-export type DataType = {
-    data: [] | Array<Car>
-}

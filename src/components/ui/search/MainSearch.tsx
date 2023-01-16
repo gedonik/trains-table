@@ -1,19 +1,17 @@
-import React, {FormEvent, useMemo, useState} from 'react';
+import React, {FormEvent} from 'react';
 import './mainSearch.css';
-import MainButton from "../../button/MainButton";
-import {DataType} from "../../../../globalTypes";
+import MainButton from "../button/MainButton";
 
-const MainSearch = ({data}: DataType) => {
-    const [searchValue, setSearchValue] = useState('')
+type PropsMainSearchType = {
+    searchValue: any,
+    setSearchValue: Function
+}
 
-    const handlerSearch = (e: FormEvent) => {
+const MainSearch = ({searchValue, setSearchValue}: PropsMainSearchType) => {
+      const handlerSearch = (e: FormEvent) => {
         e.preventDefault();
         setSearchValue('');
     }
-
-    // const searchedData = useMemo(() => {
-    //     return data.filter(item => item.carNumber.toLowerCase().includes(searchValue.toLowerCase()))
-    // }, [searchValue])
 
     return (
         <form className="form-search" onSubmit={(e) => handlerSearch(e)}>
