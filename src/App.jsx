@@ -15,30 +15,30 @@ import MainPagination from "./components/ui/pagination/MainPagination.tsx";
 import {usePagination} from "./components/hooks/usePagination.tsx";
 
 function App() {
-    const [data, setData] = useState(localData);
+    const [data, setData] = useState([]);
     const [modal, setModal] = useState(false);
     const [currentRow, setCurrentRow] = useState(null);
+    const [sortParams, setSortParams] = useState(null);
     const [selectedValue, setSelectedValue] = useState(10);
     const [paginatedArr, setPaginatedArr] = useState([]);
-    const [first, setFirst] = useState(null);
-    const [last, setLast] = useState(null);
-
+    const [firstPaginatedItem, setPaginatedItemFirst] = useState(null);
+    const [lastPaginatedItem, setPaginatedItemLast] = useState(null);
+//fetch //---------------------------------------------------------------------------------------------------------
     const [fetchData, isDataLoading, dataError] = useFetching(async () => {
-        // const response = await api.fetchData();
-        // setData([...data, ...response.data]);
+        const response = await api.fetchData();
+        setData([...data, ...response.data]);
     })
 
     useEffect(() => {
-        // fetchData();
+        fetchData();
     }, [])
-
+//pagination //----------------------------------------------------------------------------------------------------
     const {
         firstContentIndex,
         lastContentIndex,
         nextPage,
         prevPage,
         page,
-        setPage,
         totalPages,
     } = usePagination({
         contentPerPage: selectedValue,
@@ -47,23 +47,40 @@ function App() {
 
     useEffect(() => {
         setPaginatedArr([...data.slice(firstContentIndex, lastContentIndex)]);
-    }, [selectedValue, page])
+    }, [data, selectedValue, page])
 
     useEffect(() => {
-        setFirst(paginatedArr[0]);
-        setLast(paginatedArr[paginatedArr.length - 1]);
+        setPaginatedItemFirst(paginatedArr[0]);
+        setPaginatedItemLast(paginatedArr[paginatedArr.length - 1]);
+
     }, [paginatedArr])
+//search //------------------------------------------------------------------------------------------------------
+    const [searchFilter, searchValue, setSearchValue] = useSearching('');
+//sort //--------------------------------------------------------------------------------------------------------
+    const sortColumns = (columnName) => {
+        let direction = 'ascending';
 
+        if (sortParams && sortParams.columnName === columnName && sortParams.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortParams({columnName, direction});
+    };
 
-    const [searchedData, searchValue, setSearchValue] = useSearching(paginatedArr);
-    const [sortedData, sortColumns, getClassNamesFor] = useSorting(searchedData);
+    const getClassNamesFor = (columnName) => {
+        if (!sortParams) {
+            return;
+        }
+        return sortParams.columnName === columnName ? sortParams.direction : undefined;
+    };
 
+    const [sortFilter] = useSorting(sortParams)
+//open modal //-------------------------------------------------------------------------------------------------
     const setRow = (id) => {
         const currentRow = data.find(item => item.ordNumber === id);
         setModal(true);
         setCurrentRow(currentRow);
     }
-
+//change modal //-----------------------------------------------------------------------------------------------
     const changeRow = (id, trainNumber, date, invoiceNumber, invoiceId) => {
         const newData = data.map(item =>
             item.ordNumber === id
@@ -94,7 +111,7 @@ function App() {
                             />
                             <Table
                                 setRow={setRow}
-                                data={paginatedArr}
+                                data={sortFilter(searchFilter(paginatedArr))}
                                 sortColumns={sortColumns}
                                 getClassNamesFor={getClassNamesFor}
                             />
@@ -106,8 +123,8 @@ function App() {
                                 nextPage={nextPage}
                                 page={page}
                                 totalPages={totalPages}
-                                first={first}
-                                last={last}
+                                firstPaginatedItem={firstPaginatedItem}
+                                lastPaginatedItem={lastPaginatedItem}
                             />
                         </div>
                 }

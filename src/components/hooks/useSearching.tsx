@@ -1,12 +1,18 @@
 import {useMemo, useState} from "react";
-import {Car} from "../../globalTypes";
 
-export const useSearching = (data: Car[]) => {
-    const [searchValue, setSearchValue] = useState('');
+export const useSearching = (initialStateSearch: string) => {
+    const [searchValue, setSearchValue] = useState(initialStateSearch);
 
-    const searchedData = useMemo(() => {
-        return data.filter(item => item.carNumber.toLowerCase().includes(searchValue.toLowerCase()))
-    }, [searchValue]);
+    const searchFilter = (arr: []) => {
+        return arr.filter(item => item.carNumber.toLowerCase().includes(searchValue.toLowerCase()))
+    }
 
-    return [searchedData, searchValue, setSearchValue]
+    return [searchFilter, searchValue, setSearchValue]
 }
+// Как вместо carNumber подставить другие значения ?
+
+// const searchFilter = (arr: []) => {
+//     return useMemo(() => {
+//         return arr.filter(item => item.carNumber.toLowerCase().includes(searchValue.toLowerCase()))
+//     }, [searchValue]);
+// }

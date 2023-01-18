@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import TableHeader from "./tableHeader/TableHeader.js";
 import TableRow from "./tableRow/TableRow.js";
 import './table.css';

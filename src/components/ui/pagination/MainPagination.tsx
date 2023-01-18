@@ -16,7 +16,7 @@ type PropsMainPaginationType = {
     last: number
 }
 
-const MainPagination = ({selectedValue, setSelectedValue, dataLength, page, prevPage, nextPage, totalPages, first, last}: PropsMainPaginationType) => {
+const MainPagination = ({selectedValue, setSelectedValue, dataLength, page, prevPage, nextPage, totalPages, firstPaginatedItem, lastPaginatedItem}: PropsMainPaginationType) => {
     return (
         <div className="pagination">
             <span className="pagination__descr">Строк на странице:</span>
@@ -31,7 +31,7 @@ const MainPagination = ({selectedValue, setSelectedValue, dataLength, page, prev
                 />
             </div>
             <span className="pagination__page">
-                {`${first ? first.ordNumber : '-'}-${last ? last.ordNumber : '-'} из ${dataLength}`}
+                {`${firstPaginatedItem ? firstPaginatedItem.ordNumber : '-'}-${lastPaginatedItem ? lastPaginatedItem.ordNumber : '-'} из ${dataLength}`}
             </span>
             <MainButton
                 onClick={prevPage}

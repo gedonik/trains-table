@@ -1,45 +1,36 @@
-import {useState, useMemo} from "react";
-import {Car} from "../../globalTypes";
 
-export const useSorting = (data: Car[]) => {
-    const [sortParams, setSortParams] = useState(null);
+export const useSorting = (sortStateParams) => {
+    const sortFilter = (arr: []) => {
+        let sortedArr = [...arr];
 
-    const sortedData = useMemo(() => {
-        let sortableCells = [...data];
-
-        if (sortParams !== null) {
-            sortableCells.sort((a, b) => {
-                if (a[sortParams.name] < b[sortParams.name]) {
-                    return sortParams.direction === 'ascending' ? -1 : 1;
+        if (sortStateParams !== null) {
+            sortedArr.sort((a, b) => {
+                if (a[sortStateParams.columnName] < b[sortStateParams.columnName]) {
+                    return sortStateParams.direction === 'ascending' ? -1 : 1;
                 }
-                if (a[sortParams.name] > b[sortParams.name]) {
-                    return sortParams.direction === 'ascending' ? 1 : -1;
+                if (a[sortStateParams.columnName] > b[sortStateParams.columnName]) {
+                    return sortStateParams.direction === 'ascending' ? 1 : -1;
                 }
                 return 0;
             });
         }
-        return sortableCells;
-    }, [data, sortParams])
-
-    const sortColumns = (name: string) => {
-        let direction = 'ascending';
-
-        if (sortParams && sortParams.name === name && sortParams.direction === 'ascending') {
-            direction = 'descending';
-        }
-        setSortParams({name, direction});
+        return sortedArr;
     }
 
-    const getClassNamesFor = (name: string) => {
-        if (!sortParams) {
-            return;
-        }
-        return sortParams.name === name ? sortParams.direction : undefined;
-    };
-
-    return [sortedData, sortColumns, getClassNamesFor]
+    return [sortFilter]
 }
 
-
-
-
+// return useMemo(() => {
+//     if (sortStateParams !== null) {
+//         sortedArr.sort((a, b) => {
+//             if (a[sortStateParams.columnName] < b[sortStateParams.columnName]) {
+//                 return sortStateParams.direction === 'ascending' ? -1 : 1;
+//             }
+//             if (a[sortStateParams.columnName] > b[sortStateParams.columnName]) {
+//                 return sortStateParams.direction === 'ascending' ? 1 : -1;
+//             }
+//             return 0;
+//         });
+//     }
+//     return sortedArr;
+// }, [arr, sortStateParams])

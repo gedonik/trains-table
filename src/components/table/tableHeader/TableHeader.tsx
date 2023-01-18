@@ -13,11 +13,11 @@ const TableHeader = ({sortColumns, getClassNamesFor}: PropsTableHeaderType) => {
         <tr>
             {headings.map(heading =>
             <th
-                onClick={() => sortColumns(heading.name)}
-                className={getClassNamesFor(heading.name)}
-                key={heading.name}
+                onClick={() => sortColumns(heading.columnName)}
+                className={getClassNamesFor(heading.columnName)}
+                key={heading.columnName}
             >
-                {heading.title}
+                {heading.columnTitle}
             </th>
             )}
         </tr>
