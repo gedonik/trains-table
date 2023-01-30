@@ -9,3 +9,8 @@ export interface Car {
     stateId: number,
     lastOperDt: string
 }
+
+export type SortParamsType = {
+    columnName: string,
+    direction: string
+}

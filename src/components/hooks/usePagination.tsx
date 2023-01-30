@@ -5,13 +5,22 @@ type PropsUsePaginationType = {
     count: number
 }
 
-export const usePagination = ({ contentPerPage, count }: PropsUsePaginationType) => {
+type UsePaginationResult = {
+    totalPages: number,
+    nextPage: () => void,
+    prevPage:() => void,
+    firstContentIndex: number,
+    lastContentIndex: number,
+    page: number
+}
+
+export const usePagination = ({ contentPerPage, count }: PropsUsePaginationType): UsePaginationResult => {
     const [page, setPage] = useState(1);
     const pageCount = Math.ceil(count / contentPerPage);
     const lastContentIndex = page * contentPerPage;
     const firstContentIndex = lastContentIndex - contentPerPage;
 
-    const changePage = (direction: boolean) => {
+    const changePage = (direction: boolean): void => {
         setPage((state) => {
             if (direction) {
                 if (state === pageCount) {

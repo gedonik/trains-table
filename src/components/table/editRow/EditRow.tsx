@@ -1,20 +1,33 @@
-import React, {useState} from 'react';
-import './editRow.css';
-import MainButton from "../../ui/button/MainButton.tsx";
-import {dateFormatting} from "../../../services/date/dateFormatter.ts";
-import {headings} from "../tableHeader/headings.ts";
+import React, {FormEvent, useState} from "react";
+import "./editRow.css";
+import MainButton from "../../ui/button/MainButton.jsx";
+import {dateFormatting, strToDate} from "../../../services/date/dateFormatter.js";
+import {headings} from "../tableHeader/headings.js";
+import {Car} from "../../../globalTypes";
 
-const EditRow = ({setVisible, currentRow, changeRow}) => {
+type PropsEditRowType = {
+    setVisible: Function,
+    currentRow: Car,
+    changeRow: Function
+}
+
+const EditRow = ({setVisible, currentRow, changeRow}: PropsEditRowType) => {
     const [trainNumber, setTrainNumber] = useState(currentRow.trainNumber);
-    const [date, setDate] = useState(dateFormatting(currentRow.lastOperDt));
+    const [date, setDate] = useState(currentRow.lastOperDt);
     const [invoiceNumber, setInvoiceNumber] = useState(currentRow.invoiceNumber);
     const [invoiceId, setInvoiceId] = useState(currentRow.invoiceId);
 
-    const editRow = (e, trainsNumber, date, invoiceNumber, invoiceId) => {
+    const editRow = (e: FormEvent, trainsNumber: string, time: string, invoiceNumber: string, invoiceId: string) => {
         e.preventDefault();
-        console.log(date)
-        changeRow(currentRow.ordNumber, trainNumber, date, invoiceNumber, invoiceId)
+        console.log(time)
+        changeRow(currentRow.ordNumber, trainNumber, time, invoiceNumber, invoiceId)
         setVisible(false);
+    }
+
+
+    const toDateFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const changedDate = e.target.value;
+        setDate(strToDate(changedDate));
     }
 
     const cancelEdit = () => {
@@ -69,8 +82,8 @@ const EditRow = ({setVisible, currentRow, changeRow}) => {
             <label className="modal-cells" htmlFor={headings[5].columnTitle}>
                 <strong>{headings[5].columnTitle}</strong>
                 <input
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    value={dateFormatting(date)}
+                    onChange={(e) => toDateFormat(e)}
                     type="text"
                     name={headings[5].columnTitle}
                     id={headings[5].columnTitle}

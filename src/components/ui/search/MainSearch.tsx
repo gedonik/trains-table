@@ -8,13 +8,8 @@ type PropsMainSearchType = {
 }
 
 const MainSearch = ({searchValue, setSearchValue}: PropsMainSearchType) => {
-      const handlerSearch = (e: FormEvent) => {
-        e.preventDefault();
-        setSearchValue('');
-    }
-
     return (
-        <form className="form-search" onSubmit={(e) => handlerSearch(e)}>
+        <form className="form-search" onSubmit={(e) => e.preventDefault()}>
             <input
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
