@@ -1,13 +1,16 @@
-import React, {FormEvent} from 'react';
-import './mainSearch.css';
+import React, {useMemo, useState} from "react";
+import "./mainSearch.css";
 import MainButton from "../button/MainButton";
+import {useDispatch} from "react-redux";
 
-type PropsMainSearchType = {
-    searchValue: any,
-    setSearchValue: Function
-}
+const MainSearch: React.FC = () => {
+    const [searchValue, setSearchValue] = useState('');
+    const dispatch = useDispatch();
 
-const MainSearch = ({searchValue, setSearchValue}: PropsMainSearchType) => {
+    useMemo(() => {
+        dispatch({type: 'SEARCH', payload: searchValue});
+    }, [searchValue]);
+
     return (
         <form className="form-search" onSubmit={(e) => e.preventDefault()}>
             <input

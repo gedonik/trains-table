@@ -3,39 +3,33 @@ import "./editRow.css";
 import MainButton from "../../ui/button/MainButton.jsx";
 import {dateFormatting, strToDate} from "../../../services/date/dateFormatter.js";
 import {headings} from "../tableHeader/headings.js";
-import {Car} from "../../../globalTypes";
+import {useDispatch} from "react-redux";
+import {useTypedSelector} from "../../hooks/useTypedSelector";
 
-type PropsEditRowType = {
-    setVisible: Function,
-    currentRow: Car,
-    changeRow: Function
-}
+const EditRow: React.FC = () => {
+    const currentRow = useTypedSelector(state => state.cars.currentRow);
+    const dispatch = useDispatch();
 
-const EditRow = ({setVisible, currentRow, changeRow}: PropsEditRowType) => {
-    const [trainNumber, setTrainNumber] = useState(currentRow.trainNumber);
-    const [date, setDate] = useState(currentRow.lastOperDt);
-    const [invoiceNumber, setInvoiceNumber] = useState(currentRow.invoiceNumber);
-    const [invoiceId, setInvoiceId] = useState(currentRow.invoiceId);
+    const [trainNumber, setTrainNumber] = useState(currentRow?.trainNumber);
+    const [date, setDate] = useState(currentRow?.lastOperDt);
+    const [invoiceNumber, setInvoiceNumber] = useState(currentRow?.invoiceNumber);
+    const [invoiceId, setInvoiceId] = useState(currentRow?.invoiceId);
 
     const editRow = (e: FormEvent, trainsNumber: string, time: string, invoiceNumber: string, invoiceId: string) => {
         e.preventDefault();
-        console.log(time)
-        changeRow(currentRow.ordNumber, trainNumber, time, invoiceNumber, invoiceId)
-        setVisible(false);
+        dispatch({type: 'EDIT_ROW', payload: {id: currentRow?.ordNumber, trainNumber, time, invoiceNumber, invoiceId}});
     }
 
-
     const toDateFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const changedDate = e.target.value;
-        setDate(strToDate(changedDate));
+        setDate(strToDate(e.target.value));
     }
 
     const cancelEdit = () => {
-        setTrainNumber(currentRow.trainNumber);
+        setTrainNumber(currentRow?.trainNumber);
         setDate(dateFormatting(currentRow.lastOperDt));
-        setInvoiceNumber(currentRow.invoiceNumber);
-        setInvoiceId(currentRow.invoiceId);
-        setVisible(false);
+        setInvoiceNumber(currentRow?.invoiceNumber);
+        setInvoiceId(currentRow?.invoiceId);
+        dispatch({type: 'CANCEL_EDIT', payload: false});
     }
 
     return (
@@ -50,17 +44,17 @@ const EditRow = ({setVisible, currentRow, changeRow}: PropsEditRowType) => {
 
             <label className="modal-cells" htmlFor={headings[0].columnTitle}>
                 <strong>{headings[0].columnTitle}</strong>
-                {currentRow.ordNumber}
+                {currentRow?.ordNumber}
             </label>
 
             <label className="modal-cells" htmlFor={headings[1].columnTitle}>
                 <strong>{headings[1].columnTitle}</strong>
-                {currentRow.carNumber}
+                {currentRow?.carNumber}
             </label>
 
             <label className="modal-cells" htmlFor={headings[2].columnTitle}>
                 <strong>{headings[2].columnTitle}</strong>
-                {currentRow.trainIndex ? currentRow.trainIndex : '-'}
+                {currentRow?.trainIndex ? currentRow?.trainIndex : '-'}
             </label>
 
             <label className="modal-cells" htmlFor={headings[3].columnTitle}>
@@ -76,7 +70,7 @@ const EditRow = ({setVisible, currentRow, changeRow}: PropsEditRowType) => {
 
             <label className="modal-cells" htmlFor={headings[4].columnTitle}>
                 <strong>{headings[4].columnTitle}</strong>
-                {currentRow.carStatus ? currentRow.carStatus : '-'}
+                {currentRow?.carStatus ? currentRow?.carStatus : '-'}
             </label>
 
             <label className="modal-cells" htmlFor={headings[5].columnTitle}>
@@ -114,7 +108,7 @@ const EditRow = ({setVisible, currentRow, changeRow}: PropsEditRowType) => {
 
             <label className="modal-cells" htmlFor={headings[8].columnTitle}>
                 <strong>{headings[8].columnTitle}</strong>
-                {currentRow.stateId}
+                {currentRow?.stateId}
             </label>
 
             <div className="edit-cell__control">

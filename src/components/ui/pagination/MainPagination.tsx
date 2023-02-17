@@ -1,30 +1,32 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './mainPagination.css';
 import MainButton from "../button/MainButton";
 import MainSelect from "../select/MainSelect";
-import {Car} from "../../../globalTypes";
+import {useDispatch} from "react-redux";
+import {usePagination} from "../../hooks/usePagination";
+import {useTypedSelector} from "../../hooks/useTypedSelector";
 
-type firstPaginatedItemType = {
-    ordNumber: number
-}
+const MainPagination = () => {
+    const [selectedPaginationNum, setSelectedPaginationNum] = useState(10);
+    const {cars, paginatedArr} = useTypedSelector(state => state.cars);
+    const dispatch = useDispatch();
 
-type lastPaginatedItem = {
-    ordNumber: number
-}
+    const {
+        firstContentIndex,
+        lastContentIndex,
+        nextPage,
+        prevPage,
+        page,
+        totalPages,
+    } = usePagination({
+        contentPerPage: selectedPaginationNum,
+        count: cars.length,
+    });
 
-type PropsMainPaginationType = {
-    selectedPaginationNum: number,
-    setSelectedPaginationNum: Function,
-    dataLength: number,
-    page: number,
-    prevPage: Function,
-    nextPage: Function,
-    totalPages: number,
-    firstPaginatedItem: firstPaginatedItemType,
-    lastPaginatedItem: lastPaginatedItem
-}
+    useEffect(() => {
+        dispatch({type: 'PAGINATION', payload: {firstContentIndex, lastContentIndex}})
+    }, [page, selectedPaginationNum])
 
-const MainPagination = ({selectedPaginationNum, setSelectedPaginationNum, dataLength, page, prevPage, nextPage, totalPages, firstPaginatedItem, lastPaginatedItem}: PropsMainPaginationType) => {
     return (
         <div className="pagination">
             <span className="pagination__descr">Строк на странице:</span>
@@ -39,7 +41,7 @@ const MainPagination = ({selectedPaginationNum, setSelectedPaginationNum, dataLe
                 />
             </div>
             <span className="pagination__page">
-                {`${firstPaginatedItem ? firstPaginatedItem.ordNumber : '-'}-${lastPaginatedItem ? lastPaginatedItem.ordNumber : '-'} из ${dataLength}`}
+                {`${paginatedArr.length ? paginatedArr[0].ordNumber : '-'}-${paginatedArr.length ? paginatedArr[paginatedArr.length - 1].ordNumber : '-'} из ${cars.length}`}
             </span>
             <MainButton
                 onClick={prevPage}

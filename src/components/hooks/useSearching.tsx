@@ -1,12 +1,9 @@
-import {useState} from "react";
-import {Car} from "../../globalTypes";
+import {Car} from "../../types/cars";
 
-export const useSearching = (initialStateSearch: string): [Function, string, Function] => {
-    const [searchValue, setSearchValue] = useState(initialStateSearch);
+export const useSearching = (searchStateParams: string) => {
+    const searchFilter = (arr: Car[]): Car[] => {
+        return arr.filter(item => item.carNumber.toLowerCase().includes(searchStateParams.toLowerCase()));
+    };
 
-    const searchFilter = (arr: Car[]) => {
-        return arr.filter(item => item.carNumber.toLowerCase().includes(searchValue.toLowerCase()))
-    }
-
-    return [searchFilter, searchValue, setSearchValue]
+    return [searchFilter];
 }

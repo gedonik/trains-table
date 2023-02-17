@@ -1,30 +1,31 @@
-import React, {FunctionComponent} from 'react';
+import React from "react";
 import TableHeader from "./tableHeader/TableHeader.js";
 import TableRow from "./tableRow/TableRow.js";
-import './table.css';
-import {Car} from "../../globalTypes";
+import "./table.css";
+import {useTypedSelector} from "../hooks/useTypedSelector";
+import {useSorting} from "../hooks/useSorting";
+import {useSearching} from "../hooks/useSearching";
 
-type PropsTableType = {
-    data: [] | Array<Car>,
-    sortColumns: Function,
-    getClassNamesFor: Function,
-    setRow: Function
-}
+const Table: React.FC = () => {
+    const {sortParams, searchValue, paginatedArr} = useTypedSelector(state => state.cars);
+    const [searchFilter] = useSearching(searchValue);
+    const [sortFilter] = useSorting(sortParams);
 
-const Table = ({data, sortColumns, getClassNamesFor, setRow}: PropsTableType) => {
+    const filteredCars = sortFilter(searchFilter(paginatedArr));
+
     return (
-        data
+        filteredCars.length
             ?
             <table className="table">
-                <TableHeader sortColumns={sortColumns} getClassNamesFor={getClassNamesFor} />
+                <TableHeader/>
                 <tbody>
-                {data.map((row, index) =>
-                    <TableRow setRow={setRow} data={row} key={index}/>
+                {filteredCars.map((car, index: number) =>
+                    <TableRow car={car} key={index}/>
                 )}
                 </tbody>
             </table>
             :
-            <h2>No data</h2>
+            <h2 className="no-data-title">Данные не найдены</h2>
     );
 };
 

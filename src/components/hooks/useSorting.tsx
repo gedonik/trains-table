@@ -1,9 +1,6 @@
-type PropsSortStateParamsType = {
-    columnName: string,
-    direction: string
-}
+import {SortParams} from "../../types/cars";
 
-export const useSorting = (sortStateParams: PropsSortStateParamsType) => {
+export const useSorting = (sortStateParams: SortParams | null) => {
     const sortFilter = (arr: []) => {
         let sortedArr = [...arr];
 
@@ -21,5 +18,5 @@ export const useSorting = (sortStateParams: PropsSortStateParamsType) => {
         return sortedArr;
     }
 
-    return [sortFilter]
+    return [sortFilter];
 }

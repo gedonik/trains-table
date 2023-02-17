@@ -4,3 +4,8 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
+
+.no-data-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
