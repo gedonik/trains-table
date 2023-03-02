@@ -18,62 +18,40 @@ export interface SortParams {
 export interface CarsState {
     cars: Car[],
     loading: boolean,
-    error: null | string,
-    searchValue: string,
-    selectedPaginationNum: number,
-    sortParams: null | SortParams,
-    currentRow: null | undefined | Car,
-    editRowModal: boolean,
-    paginatedArr: Car[]
+    error: any,
 }
 
 export enum CarsActionTypes {
-    SEARCH = 'SEARCH',
-    SORT_COLUMNS = 'SORT_COLUMNS',
-    PAGINATION = 'PAGINATION',
-    SET_ROW = 'SET_ROW',
-    EDIT_ROW = 'EDIT_ROW',
-    CANCEL_EDIT = 'CANCEL_EDIT'
+    SET_LOADING = 'SET_LOADING',
+    FETCH_CARS_SUCCESS = 'FETCH_CARS_SUCCESS',
+    FETCH_CARS_ERROR = 'FETCH_CARS_ERROR',
+    EDIT_CAR = 'EDIT_CAR'
 }
 
-interface SearchCarsAction {
-    type: CarsActionTypes.SEARCH,
-    payload: string
+interface SetLoadingCarsAction {
+    type: CarsActionTypes.SET_LOADING,
+    payload: boolean
 }
 
-interface SortColumnsCarsAction {
-    type: CarsActionTypes.SORT_COLUMNS,
-    payload: SortParams | null
+interface FetchCarsSuccessAction {
+    type: CarsActionTypes.FETCH_CARS_SUCCESS;
+    payload: Car[];
 }
 
-interface PaginationCarsAction {
-    type: CarsActionTypes.PAGINATION,
-    payload: {
-        firstContentIndex: number,
-        lastContentIndex: number
-    }
+interface FetchCarsErrorAction {
+    type: CarsActionTypes.FETCH_CARS_ERROR;
+    payload: any;
 }
 
-interface SetRowCarsAction {
-    type: CarsActionTypes.SET_ROW,
-    payload: number
-}
-
-interface EditRowCarsAction {
-    type: CarsActionTypes.EDIT_ROW,
+interface EditCarAction {
+    type: CarsActionTypes.EDIT_CAR;
     payload: {
         id: number,
         trainNumber: string,
         time: string,
-        invoiceNumber: string
+        invoiceNumber: string,
         invoiceId: string
-    }
+    };
 }
 
-interface CancelEditCarsAction {
-    type: CarsActionTypes.CANCEL_EDIT,
-    payload: boolean
-}
-
-export type CarsAction = SearchCarsAction | SortColumnsCarsAction | PaginationCarsAction | SetRowCarsAction |
-    EditRowCarsAction | CancelEditCarsAction;
+export type CarsAction = SetLoadingCarsAction | FetchCarsSuccessAction | FetchCarsErrorAction | EditCarAction;

@@ -1,31 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import './mainPagination.css';
+import React from "react";
+import "./mainPagination.css";
 import MainButton from "../button/MainButton";
 import MainSelect from "../select/MainSelect";
-import {useDispatch} from "react-redux";
-import {usePagination} from "../../hooks/usePagination";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
+import {Car} from "../../../types/cars";
 
-const MainPagination = () => {
-    const [selectedPaginationNum, setSelectedPaginationNum] = useState(10);
-    const {cars, paginatedArr} = useTypedSelector(state => state.cars);
-    const dispatch = useDispatch();
+type PropsMainPagination ={
+    selectedPaginationNum: number,
+    setSelectedPaginationNum: Function,
+    page: number,
+    totalPages: number,
+    nextPage: Function,
+    prevPage: Function,
+    firstPaginatedItem: Car | null,
+    lastPaginatedItem: Car | null
+}
 
-    const {
-        firstContentIndex,
-        lastContentIndex,
-        nextPage,
-        prevPage,
-        page,
-        totalPages,
-    } = usePagination({
-        contentPerPage: selectedPaginationNum,
-        count: cars.length,
-    });
-
-    useEffect(() => {
-        dispatch({type: 'PAGINATION', payload: {firstContentIndex, lastContentIndex}})
-    }, [page, selectedPaginationNum])
+const MainPagination: React.FC<PropsMainPagination> = ({...props}: PropsMainPagination) => {
+    const {cars} = useTypedSelector(state => state.cars);
+    const {selectedPaginationNum, setSelectedPaginationNum, page, totalPages, nextPage, prevPage, firstPaginatedItem, lastPaginatedItem} = props;
 
     return (
         <div className="pagination">
@@ -41,7 +34,7 @@ const MainPagination = () => {
                 />
             </div>
             <span className="pagination__page">
-                {`${paginatedArr.length ? paginatedArr[0].ordNumber : '-'}-${paginatedArr.length ? paginatedArr[paginatedArr.length - 1].ordNumber : '-'} из ${cars.length}`}
+                {`${firstPaginatedItem ? firstPaginatedItem.ordNumber : '-'}-${lastPaginatedItem ? lastPaginatedItem.ordNumber : '-'} из ${cars?.length}`}
             </span>
             <MainButton
                 onClick={prevPage}

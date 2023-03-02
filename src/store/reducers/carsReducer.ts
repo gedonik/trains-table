@@ -1,37 +1,21 @@
-import {localData} from "../../data";
-import {CarsAction, CarsState} from "../../types/cars";
+import {CarsAction, CarsActionTypes, CarsState} from "../../types/cars";
 
 const initialState: CarsState = {
-    cars: localData,
+    cars: [],
     loading: false,
-    error: null,
-    searchValue: '',
-    selectedPaginationNum: 10,
-    sortParams: null,
-    currentRow: null,
-    editRowModal: false,
-    paginatedArr: [],
+    error: null
 }
 
 export const carsReducer = (state = initialState, action: CarsAction): CarsState => {
     switch (action.type) {
-        case 'SEARCH':
-            return {...state, searchValue: action.payload};
-        case 'SORT_COLUMNS':
-            return {...state, sortParams: action.payload};
-        case 'PAGINATION':
-            return {
-                ...state,
-                paginatedArr: [...state.cars.slice(action.payload.firstContentIndex, action.payload.lastContentIndex)]
-            };
-        case 'SET_ROW':
-            return {
-                ...state,
-                currentRow: state.cars.find(item => item.ordNumber === action.payload),
-                editRowModal: true
-            };
-        case 'EDIT_ROW':
-            const changedData = state.paginatedArr.map(item =>
+        case CarsActionTypes.SET_LOADING:
+            return {...state, loading: action.payload};
+        case CarsActionTypes.FETCH_CARS_SUCCESS:
+            return {...state, cars: action.payload};
+        case CarsActionTypes.FETCH_CARS_ERROR:
+            return {...state, error: action.payload.message};
+        case CarsActionTypes.EDIT_CAR:
+            const changedCars = state.cars.map(item =>
                 item.ordNumber === action.payload.id
                     ? {
                         ...item,
@@ -42,9 +26,7 @@ export const carsReducer = (state = initialState, action: CarsAction): CarsState
                     }
                     : item
             )
-            return {...state, paginatedArr: [...changedData], editRowModal: false};
-        case 'CANCEL_EDIT':
-            return {...state, editRowModal: action.payload};
+            return {...state, cars: [...changedCars]}
         default:
             return state;
     }

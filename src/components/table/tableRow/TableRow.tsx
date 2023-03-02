@@ -1,14 +1,19 @@
-import React from "react";
+import React, {useContext} from "react";
 import "./tableRow.css";
-import {dateFormatting} from "../../../services/date/dateFormatter.js";
-import {useDispatch} from "react-redux";
+import {dateFormatting} from "../../../services/dateFormatter.js";
 import {Car} from "../../../types/cars";
+import {TableContext} from "../../../pages/TablePage";
 
-const TableRow: React.FC = ({car}: {car: Car}) => {
-    const dispatch = useDispatch();
+type PropsTableRow = {
+    car: Car
+}
+
+const TableRow: React.FC<PropsTableRow> = (props: PropsTableRow) => {
+    const {car} = props;
+    const {findCarHandler} = useContext(TableContext);
 
     return (
-        <tr onClick={() => dispatch({type: 'SET_ROW', payload: car.ordNumber})} className="row-list">
+        <tr onClick={() => findCarHandler(car.ordNumber)} className="row-list">
             <td className="row-item">{car.ordNumber}</td>
             <td className="row-item">{car.carNumber}</td>
             <td className="row-item">{car.trainIndex}</td>

@@ -1,12 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
 import "./tableHeader.css";
 import {headings} from "./headings.js";
-import {useDispatch} from "react-redux";
-import {useTypedSelector} from "../../hooks/useTypedSelector";
+import {TableContext} from "../../../pages/TablePage";
 
 const TableHeader = () => {
-    const sortParams = useTypedSelector(state => state.cars.sortParams);
-    const dispatch = useDispatch();
+    const {sortParams, setSortParams} = useContext(TableContext);
 
     const sortColumns = (columnName: string) => {
         let direction = 'ascending';
@@ -14,8 +12,8 @@ const TableHeader = () => {
         if (sortParams && sortParams.columnName === columnName && sortParams.direction === 'ascending') {
             direction = 'descending';
         }
-        const newSortParams = {columnName, direction}
-        dispatch({type: 'SORT_COLUMNS', payload: newSortParams});
+        const newSortParams = {columnName, direction};
+        setSortParams(newSortParams);
     };
 
     const getClassNamesFor = (columnName: string) => {

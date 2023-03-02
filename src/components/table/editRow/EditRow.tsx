@@ -1,41 +1,63 @@
 import React, {FormEvent, useState} from "react";
 import "./editRow.css";
 import MainButton from "../../ui/button/MainButton.jsx";
-import {dateFormatting, strToDate} from "../../../services/date/dateFormatter.js";
 import {headings} from "../tableHeader/headings.js";
+import {Car} from "../../../types/cars";
 import {useDispatch} from "react-redux";
-import {useTypedSelector} from "../../hooks/useTypedSelector";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+import ru from 'date-fns/locale/ru';
 
-const EditRow: React.FC = () => {
-    const currentRow = useTypedSelector(state => state.cars.currentRow);
+type PropsEditRow = {
+    cars: Car[],
+    findCar: number,
+    setVisible: Function
+}
+
+const EditRow: React.FC<PropsEditRow> = ({cars, findCar, setVisible}: PropsEditRow) => {
+    const [currentRow, setCurrentRow] = useState(cars.find(item => item.ordNumber === findCar));
     const dispatch = useDispatch();
 
-    const [trainNumber, setTrainNumber] = useState(currentRow?.trainNumber);
-    const [date, setDate] = useState(currentRow?.lastOperDt);
-    const [invoiceNumber, setInvoiceNumber] = useState(currentRow?.invoiceNumber);
-    const [invoiceId, setInvoiceId] = useState(currentRow?.invoiceId);
+    const [trainNumber, setTrainNumber] = useState<string | undefined>(currentRow?.trainNumber);
+    const [startDate, setStartDate] = useState<string | Date | undefined | null>(currentRow?.lastOperDt);
+    const [invoiceNumber, setInvoiceNumber] = useState<string | undefined>(currentRow?.invoiceNumber);
+    const [invoiceId, setInvoiceId] = useState<string | undefined>(currentRow?.invoiceId);
 
-    const editRow = (e: FormEvent, trainsNumber: string, time: string, invoiceNumber: string, invoiceId: string) => {
+    const editRow = (e: FormEvent, id: number, trainNumber: string | undefined, time: string | Date | undefined, invoiceNumber: string | undefined, invoiceId: string | undefined) => {
         e.preventDefault();
-        dispatch({type: 'EDIT_ROW', payload: {id: currentRow?.ordNumber, trainNumber, time, invoiceNumber, invoiceId}});
-    }
 
-    const toDateFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDate(strToDate(e.target.value));
+        let dateToStr;
+
+        if (typeof time === 'object' && time !== null && 'toISOString' in time) {
+            dateToStr = time.toISOString();
+        }
+
+        dispatch({
+            type: 'EDIT_CAR', payload: {
+                id,
+                trainNumber,
+                time: dateToStr,
+                invoiceNumber,
+                invoiceId
+            }
+        })
+        setVisible(false);
     }
 
     const cancelEdit = () => {
         setTrainNumber(currentRow?.trainNumber);
-        setDate(dateFormatting(currentRow.lastOperDt));
+        setStartDate(currentRow?.lastOperDt);
         setInvoiceNumber(currentRow?.invoiceNumber);
         setInvoiceId(currentRow?.invoiceId);
-        dispatch({type: 'CANCEL_EDIT', payload: false});
+        setVisible(false);
     }
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <form
             className="edit-cell"
-            onSubmit={(e) => editRow(e, trainNumber, date, invoiceNumber, invoiceId)}
+            onSubmit={(e) => editRow(e, findCar, trainNumber, startDate, invoiceNumber, invoiceId)}
         >
             <h2 className="edit-cell__title">Изменение значений</h2>
             <button className="edit-cell__close" type="button" onClick={() => cancelEdit()}>
@@ -75,12 +97,13 @@ const EditRow: React.FC = () => {
 
             <label className="modal-cells" htmlFor={headings[5].columnTitle}>
                 <strong>{headings[5].columnTitle}</strong>
-                <input
-                    value={dateFormatting(date)}
-                    onChange={(e) => toDateFormat(e)}
-                    type="text"
-                    name={headings[5].columnTitle}
-                    id={headings[5].columnTitle}
+                <DatePicker
+                    dateFormat="dd.MM.yyyy HH:mm"
+                    selected={new Date(startDate)}
+                    onChange={(date) => setStartDate(date)}
+                    locale={ru}
+                    showTimeSelect
+                    timeIntervals={15}
                 />
             </label>
 
