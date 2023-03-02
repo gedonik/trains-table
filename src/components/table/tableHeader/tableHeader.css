@@ -15,7 +15,7 @@ th {
 }
 
 th.ascending::before {
-    content: '↑';
+    content: '↓';
     position: absolute;
     top: 50%;
     left: 0;
@@ -23,7 +23,7 @@ th.ascending::before {
 }
 
 th.descending::before {
-    content: '↓';
+    content: '↑';
     position: absolute;
     top: 50%;
     left: 0;
