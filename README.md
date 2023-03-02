@@ -15,7 +15,7 @@ Clone my project, after type in terminal:
 
 ## Tech Stack
 
-HTML, CSS, React, Bootstrap-icons, Axios, date-fns.
+HTML, CSS, React, Redux, TS, Bootstrap-icons, Axios, datepicker, date-fns.
 
 ## Demo
 
