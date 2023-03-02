@@ -1,13 +1,15 @@
-import React, {FormEvent} from 'react';
-import './mainSearch.css';
+import React from "react";
+import "./mainSearch.css";
 import MainButton from "../button/MainButton";
 
-type PropsMainSearchType = {
-    searchValue: any,
+type PropsMainSearch = {
+    searchValue: string,
     setSearchValue: Function
 }
 
-const MainSearch = ({searchValue, setSearchValue}: PropsMainSearchType) => {
+const MainSearch: React.FC<PropsMainSearch> = (props: PropsMainSearch) => {
+    const {searchValue, setSearchValue} = props;
+
     return (
         <form className="form-search" onSubmit={(e) => e.preventDefault()}>
             <input

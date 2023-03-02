@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import ReactDOM from "react-dom";
-import './editCellsModal.css';
+import "./editCellsModal.css";
 
 type PropsEditCellsModalType = {
     children: any,

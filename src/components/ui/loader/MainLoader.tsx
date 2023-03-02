@@ -1,7 +1,7 @@
-import React from 'react';
-import './mainLoader.css';
+import React from "react";
+import "./mainLoader.css";
 
-const MainLoader = () => {
+const MainLoader: React.FC = () => {
     return (
         <div className="loader-wrapper">
             <div className="loader">

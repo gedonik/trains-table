@@ -42,6 +42,7 @@
     padding: 0.313rem 1.25rem;
     margin-right: 0.938rem;
     background-color: #35ce35;
+    color: #fff;
 }
 
 .btn.edit-cell__save:hover {
@@ -50,6 +51,7 @@
 
 .btn.edit-cell__cancel {
     background-color: #de5454;
+    color: #fff;
 }
 
 .btn.edit-cell__cancel:hover {
@@ -58,4 +60,8 @@
 
 input {
     text-align: right;
+}
+
+.react-datepicker-wrapper {
+    text-align: end;
 }

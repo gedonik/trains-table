@@ -1,18 +1,15 @@
-type PropsSortStateParamsType = {
-    columnName: string,
-    direction: string
-}
+import {Car, SortParams} from "../../types/cars";
 
-export const useSorting = (sortStateParams: PropsSortStateParamsType) => {
-    const sortFilter = (arr: []) => {
+export const useSorting = (sortStateParams: SortParams | null) => {
+    const sortFilter = (arr: [] | Car[]) => {
         let sortedArr = [...arr];
 
         if (sortStateParams !== null) {
             sortedArr.sort((a, b) => {
-                if (a[sortStateParams.columnName] < b[sortStateParams.columnName]) {
+                if (a[sortStateParams.columnName as keyof Car] < b[sortStateParams.columnName as keyof Car]) {
                     return sortStateParams.direction === 'ascending' ? -1 : 1;
                 }
-                if (a[sortStateParams.columnName] > b[sortStateParams.columnName]) {
+                if (a[sortStateParams.columnName as keyof Car] > b[sortStateParams.columnName as keyof Car]) {
                     return sortStateParams.direction === 'ascending' ? 1 : -1;
                 }
                 return 0;
@@ -21,5 +18,5 @@ export const useSorting = (sortStateParams: PropsSortStateParamsType) => {
         return sortedArr;
     }
 
-    return [sortFilter]
+    return [sortFilter];
 }

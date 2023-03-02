@@ -1,30 +1,25 @@
-import React, {useState} from 'react';
-import './mainPagination.css';
+import React from "react";
+import "./mainPagination.css";
 import MainButton from "../button/MainButton";
 import MainSelect from "../select/MainSelect";
-import {Car} from "../../../globalTypes";
+import {useTypedSelector} from "../../hooks/useTypedSelector";
+import {Car} from "../../../types/cars";
 
-type firstPaginatedItemType = {
-    ordNumber: number
-}
-
-type lastPaginatedItem = {
-    ordNumber: number
-}
-
-type PropsMainPaginationType = {
+type PropsMainPagination ={
     selectedPaginationNum: number,
     setSelectedPaginationNum: Function,
-    dataLength: number,
     page: number,
-    prevPage: Function,
-    nextPage: Function,
     totalPages: number,
-    firstPaginatedItem: firstPaginatedItemType,
-    lastPaginatedItem: lastPaginatedItem
+    nextPage: Function,
+    prevPage: Function,
+    firstPaginatedItem: Car | null,
+    lastPaginatedItem: Car | null
 }
 
-const MainPagination = ({selectedPaginationNum, setSelectedPaginationNum, dataLength, page, prevPage, nextPage, totalPages, firstPaginatedItem, lastPaginatedItem}: PropsMainPaginationType) => {
+const MainPagination: React.FC<PropsMainPagination> = ({...props}: PropsMainPagination) => {
+    const {cars} = useTypedSelector(state => state.cars);
+    const {selectedPaginationNum, setSelectedPaginationNum, page, totalPages, nextPage, prevPage, firstPaginatedItem, lastPaginatedItem} = props;
+
     return (
         <div className="pagination">
             <span className="pagination__descr">Строк на странице:</span>
@@ -39,7 +34,7 @@ const MainPagination = ({selectedPaginationNum, setSelectedPaginationNum, dataLe
                 />
             </div>
             <span className="pagination__page">
-                {`${firstPaginatedItem ? firstPaginatedItem.ordNumber : '-'}-${lastPaginatedItem ? lastPaginatedItem.ordNumber : '-'} из ${dataLength}`}
+                {`${firstPaginatedItem ? firstPaginatedItem.ordNumber : '-'}-${lastPaginatedItem ? lastPaginatedItem.ordNumber : '-'} из ${cars?.length}`}
             </span>
             <MainButton
                 onClick={prevPage}

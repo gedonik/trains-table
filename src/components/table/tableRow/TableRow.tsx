@@ -1,25 +1,28 @@
-import React from 'react';
-import './tableRow.css';
-import {dateFormatting} from "../../../services/date/dateFormatter.js";
-import {Car} from "../../../globalTypes";
+import React, {useContext} from "react";
+import "./tableRow.css";
+import {dateFormatting} from "../../../services/dateFormatter.js";
+import {Car} from "../../../types/cars";
+import {TableContext} from "../../../pages/TablePage";
 
 type PropsTableRow = {
-    data: Car,
-    setRow: Function
+    car: Car
 }
 
-const TableRow = ({ data, setRow }: PropsTableRow) => {
+const TableRow: React.FC<PropsTableRow> = (props: PropsTableRow) => {
+    const {car} = props;
+    const {findCarHandler} = useContext(TableContext);
+
     return (
-        <tr onClick={() => setRow(data.ordNumber)} className="row-list">
-            <td className="row-item">{data.ordNumber}</td>
-            <td className="row-item">{data.carNumber}</td>
-            <td className="row-item">{data.trainIndex}</td>
-            <td className="row-item">{data.trainNumber}</td>
-            <td className="row-item">{data.carStatus}</td>
-            <td className="row-item">{dateFormatting(data.lastOperDt)}</td>
-            <td className="row-item">{data.invoiceNumber}</td>
-            <td className="row-item">{data.invoiceId}</td>
-            <td className="row-item">{data.stateId}</td>
+        <tr onClick={() => findCarHandler(car.ordNumber)} className="row-list">
+            <td className="row-item">{car.ordNumber}</td>
+            <td className="row-item">{car.carNumber}</td>
+            <td className="row-item">{car.trainIndex}</td>
+            <td className="row-item">{car.trainNumber}</td>
+            <td className="row-item">{car.carStatus}</td>
+            <td className="row-item">{dateFormatting(car.lastOperDt)}</td>
+            <td className="row-item">{car.invoiceNumber}</td>
+            <td className="row-item">{car.invoiceId}</td>
+            <td className="row-item">{car.stateId}</td>
         </tr>
     );
 };
